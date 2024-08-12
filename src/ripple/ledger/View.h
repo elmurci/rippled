@@ -24,6 +24,7 @@
 #include <ripple/core/Config.h>
 #include <ripple/ledger/ApplyView.h>
 #include <ripple/ledger/OpenView.h>
+#include <ripple/basics/Log.h>
 #include <ripple/ledger/RawView.h>
 #include <ripple/ledger/ReadView.h>
 #include <ripple/protocol/Protocol.h>
