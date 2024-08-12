@@ -76,7 +76,7 @@ namespace detail {
 // large to make the FeatureBitset, it MAY be larger. It MUST NOT be less than
 // the actual number of amendments. A LogicError on startup will verify this.
 
-static constexpr std::size_t numFeatures = 85;
+static constexpr std::size_t numFeatures = 86;
 
 /** Amendments that this server supports and the default voting behavior.
    Whether they are enabled depends on the Rules defined in the validated
@@ -372,6 +372,7 @@ extern uint256 const fixEmptyDID;
 extern uint256 const fixXChainRewardRounding;
 extern uint256 const fixPreviousTxnID;
 extern uint256 const fixAMMv1_1;
+extern uint256 const featurePaychanAndEscrowForTokens;
 
 }  // namespace ripple
 

@@ -129,6 +129,7 @@ LedgerFormats::initialize()
             {sfAccount,              soeREQUIRED},
             {sfDestination,          soeREQUIRED},
             {sfAmount,               soeREQUIRED},
+            {sfTransferRate,         soeOPTIONAL},
             {sfCondition,            soeOPTIONAL},
             {sfCancelAfter,          soeOPTIONAL},
             {sfFinishAfter,          soeOPTIONAL},
