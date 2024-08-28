@@ -113,8 +113,9 @@ XRPNotCreated::visitEntry(
                     ((*before)[sfAmount] - (*before)[sfBalance]).xrp().drops();
                 break;
             case ltESCROW:
-                drops_ -= (*before)[sfAmount].xrp().drops();
-                break;
+                if (isXRP((*before)[sfAmount]))
+                    drops_ -= (*before)[sfAmount].xrp().drops();
+		break;
             default:
                 if (auto it = pluginXRPChangeFns.find(before->getType());
                     it != pluginXRPChangeFns.end())
@@ -139,8 +140,8 @@ XRPNotCreated::visitEntry(
                                   .drops();
                 break;
             case ltESCROW:
-                if (!isDelete)
-                    drops_ += (*after)[sfAmount].xrp().drops();
+                if (!isDelete && isXRP((*after)[sfAmount]))
+	    		drops_ += (*after)[sfAmount].xrp().drops();
                 break;
             default:
                 if (auto it = pluginXRPChangeFns.find(after->getType());
@@ -305,12 +306,25 @@ NoZeroEscrow::visitEntry(
 
 bool
 NoZeroEscrow::finalize(
-    STTx const&,
+    STTx const& txn,
     TER const,
     XRPAmount const,
-    ReadView const&,
+    ReadView const& rv,
     beast::Journal const& j)
 {
+    // bypass this invariant check for IOU escrows
+    if (bad_ && rv.rules().enabled(featurePaychanAndEscrowForTokens) &&
+        txn.isFieldPresent(sfTransactionType))
+    {
+        uint16_t const tt = txn.getFieldU16(sfTransactionType);
+        if (tt == ttESCROW_CANCEL || tt == ttESCROW_FINISH)
+            return true;
+
+        if (txn.isFieldPresent(sfAmount) &&
+            !isXRP(txn.getFieldAmount(sfAmount)))
+            return true;
+    }
+
     if (bad_)
     {
         JLOG(j.fatal()) << "Invariant failed: escrow specifies invalid amount";

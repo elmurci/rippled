@@ -73,7 +73,7 @@ initializeTransResults()
         MAKE_ERROR(tecUNFUNDED_ADD,                  "DEPRECATED."),
         MAKE_ERROR(tecUNFUNDED_AMM,                  "Insufficient balance to fund AMM."),
         MAKE_ERROR(tecUNFUNDED_OFFER,                "Insufficient balance to fund created offer."),
-        MAKE_ERROR(tecUNFUNDED_PAYMENT,              "Insufficient XRP balance to send."),
+        MAKE_ERROR(tecUNFUNDED_PAYMENT,              "Insufficient balance to send."),
         MAKE_ERROR(tecOWNERS,                        "Non-zero owner count."),
         MAKE_ERROR(tecNO_ISSUER,                     "Issuer account does not exist."),
         MAKE_ERROR(tecNO_AUTH,                       "Not authorized to hold asset."),
@@ -214,7 +214,7 @@ initializeTransResults()
         MAKE_ERROR(temXCHAIN_BRIDGE_BAD_REWARD_AMOUNT, "Malformed: Bad reward amount."),
         MAKE_ERROR(temARRAY_EMPTY,               "Malformed: Array is empty."),
         MAKE_ERROR(temARRAY_TOO_LARGE,           "Malformed: Array is too large."),
-
+	MAKE_ERROR(tecPRECISION_LOSS,                "The amounts used by the transaction cannot interact."),
         MAKE_ERROR(terRETRY,                  "Retry transaction."),
         MAKE_ERROR(terFUNDS_SPENT,            "DEPRECATED."),
         MAKE_ERROR(terINSUF_FEE_B,            "Account balance can't pay fee."),

@@ -20,6 +20,7 @@
 #include <ripple/app/tx/impl/Escrow.h>
 
 #include <ripple/app/misc/HashRouter.h>
+#include <ripple/basics/Log.h>
 #include <ripple/basics/XRPAmount.h>
 #include <ripple/basics/Log.h>
 #include <ripple/basics/chrono.h>
@@ -93,8 +94,8 @@ after(NetClock::time_point now, std::uint32_t mark)
 TxConsequences
 EscrowCreate::makeTxConsequences(PreflightContext const& ctx)
 {
-    return TxConsequences{
-        ctx.tx, isXRP(ctx.tx[sfAmount]) ? ctx.tx[sfAmount].xrp() : beast::zero};
+	return TxConsequences{
+        	ctx.tx, isXRP(ctx.tx[sfAmount]) ? ctx.tx[sfAmount].xrp() : beast::zero};
 }
 
 NotTEC
@@ -221,18 +222,6 @@ EscrowCreate::doApply()
     if (!sle)
         return tefINTERNAL;
 
-    STAmount const amount{ctx_.tx[sfAmount]};
-
-    std::shared_ptr<SLE> sleLine;
-
-    auto const balance = STAmount((*sle)[sfBalance]).xrp();
-    auto const reserve =
-        ctx_.view().fees().accountReserve((*sle)[sfOwnerCount] + 1);
-    bool const isIssuer = amount.getIssuer() == account;
-
-    if (balance < reserve)
-        return tecINSUFFICIENT_RESERVE;
-
     // Check reserve and funds availability
     if (isXRP(amount))
     {
@@ -317,7 +306,7 @@ EscrowCreate::doApply()
     (*slep)[~sfCancelAfter] = ctx_.tx[~sfCancelAfter];
     (*slep)[~sfFinishAfter] = ctx_.tx[~sfFinishAfter];
     (*slep)[~sfDestinationTag] = ctx_.tx[~sfDestinationTag];
-
+    
     if (ctx_.view().rules().enabled(featurePaychanAndEscrowForTokens))
     {
         auto const xferRate = transferRate(view(), amount.getIssuer());
@@ -695,7 +684,7 @@ EscrowCancel::preflight(PreflightContext const& ctx)
 TER
 EscrowCancel::doApply()
 {
-    auto const k = keylet::escrow(ctx_.tx[sfOwner], ctx_.tx[sfOfferSequence]);
+	auto const k = keylet::escrow(ctx_.tx[sfOwner], ctx_.tx[sfOfferSequence]);
     auto const slep = ctx_.view().peek(k);
     if (!slep)
         return tecNO_TARGET;

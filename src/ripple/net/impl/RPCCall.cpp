@@ -156,6 +156,35 @@ private:
         }
     }
 
+    // Build an object
+    // { "currency" : "XYZ", "issuer" : "rXYX", "value": 1000 }
+    static Json::Value
+    jvParseSTAmount(std::string const& strIC)
+    {
+        static boost::regex reCurIss(
+            "\\`(0|[1-9][0-9]*)(?:/([[:alpha:]]{3}))(?:/(.+))?\\'");
+
+        boost::smatch icMatch;
+
+        Json::Value jvResult(Json::objectValue);
+        if (boost::regex_match(strIC, icMatch, reCurIss))
+        {
+            std::string strAmount = icMatch[1];
+            std::string strCurrency = icMatch[2];
+            std::string strIssuer = icMatch[3];
+
+            jvResult[jss::currency] = strCurrency;
+            jvResult[jss::value] = strAmount;
+
+            if (strIssuer.length())
+            {
+                // Could confirm issuer is a valid Ripple address.
+                jvResult[jss::issuer] = strIssuer;
+            }
+        }
+        return jvResult;
+    }
+
     static bool
     validPublicKey(
         std::string const& strPk,

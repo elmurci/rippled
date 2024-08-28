@@ -17,7 +17,6 @@
 */
 //==============================================================================
 
-
 #include <ripple/basics/Log.h>
 #include <ripple/basics/chrono.h>
 #include <ripple/basics/contract.h>
@@ -258,7 +257,6 @@ accountHolds(
             // Put balance in account terms.
             amount.negate();
         }
-
         amount.setIssuer(issuer);
     }
     JLOG(j.trace()) << "accountHolds:"
@@ -1623,8 +1621,8 @@ cleanupOnAccountDelete(
                 return tefBAD_LEDGER;
             }
 
-            LedgerEntryType const nodeType{safe_cast<LedgerEntryType>(
-                sleItem->getFieldU16(sfLedgerEntryType))};
+            std::uint16_t const nodeType{
+                sleItem->getFieldU16(sfLedgerEntryType)};
 
             // Deleter handles the details of specific account-owned object
             // deletion

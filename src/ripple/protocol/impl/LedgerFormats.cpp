@@ -137,6 +137,7 @@ LedgerFormats::initialize()
             {sfOwnerNode,            soeREQUIRED},
             {sfPreviousTxnID,        soeREQUIRED},
             {sfPreviousTxnLgrSeq,    soeREQUIRED},
+	    {sfTransferRate,         soeOPTIONAL},
             {sfDestinationNode,      soeOPTIONAL},
         },
         commonFields);
